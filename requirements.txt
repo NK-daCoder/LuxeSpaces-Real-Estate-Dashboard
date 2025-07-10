@@ -8,3 +8,12 @@ pytz
 sqlparse
 psycopg2-binary
 python-dotenv
+django-filter
+Pillow
+cloudinary
+django-cloudinary-storage
+
+django-allauth
+dj-rest-auth
+drf-nested-routers
+django-debug-toolbar
