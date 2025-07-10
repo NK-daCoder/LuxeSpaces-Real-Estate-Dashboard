@@ -18,3 +18,5 @@ adding your own fields like is_agent and is_admin.
 class CustomUser(AbstractUser):
     is_agent = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
+
+    
