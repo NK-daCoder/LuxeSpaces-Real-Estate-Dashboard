@@ -53,7 +53,7 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
     password = serializers.CharField(write_only=True, required=True)
 
-
+# UserSerializer Only returns allowed public fields (e.g. no password)
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
