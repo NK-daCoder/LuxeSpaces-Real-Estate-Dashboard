@@ -21,7 +21,7 @@ class CustomUser(AbstractUser):
     is_admin = models.BooleanField(default=False)
 
 class AgentProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='agent_profile')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     license_number = models.CharField(max_length=50, blank=True, null=True)
     profile_image = models.ImageField(upload_to='agents/', blank=True, null=True)
