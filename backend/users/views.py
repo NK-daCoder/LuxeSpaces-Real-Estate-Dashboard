@@ -7,14 +7,14 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import CustomUser
-from .serializers import AgentRegistrerSerializer, AdminRegisterSerializer, LoginSerializer, UserSerializer
+from .serializers import AgentRegistrationSerializer, AdminRegistrationSerializer, LoginSerializer, UserSerializer
 
 # Create your views here.
 
 # Agent Registration view
 class RegisterAgentView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = AgentRegistrerSerializer
+    serializer_class = AgentRegistrationSerializer
     permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
@@ -23,7 +23,7 @@ class RegisterAgentView(generics.CreateAPIView):
 
 class RegisterAdminView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = AdminRegisterSerializer
+    serializer_class = AdminRegistrationSerializer
     permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
@@ -52,7 +52,7 @@ class loginView(generics.GenericAPIView):
         return Response({
             "refresh": str(refresh),
             "access": str(refresh.access_token),
-            "user": user_data
+            "user": UserSerializer(user).data
         }, status=status.HTTP_200_OK)
 
 
