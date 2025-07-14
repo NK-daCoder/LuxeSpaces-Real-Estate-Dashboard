@@ -2,6 +2,8 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 
+from .models import AgentProfile
+
 # User = get_user_model() means we are using the custom user model defined in our app
 # which is CustomUser in this case. you'll also find it in the settings.py file
 # under AUTH_USER_MODEL = 'users.CustomUser'
@@ -58,3 +60,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'is_agent', 'is_admin')
+
+
+class AgentProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AgentProfile
+        fields = ('phone_number', 'license_number', 'profile_image', 'bio')
+
+

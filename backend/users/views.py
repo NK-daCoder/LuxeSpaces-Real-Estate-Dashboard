@@ -7,7 +7,8 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import CustomUser
-from .serializers import AgentRegistrationSerializer, AdminRegistrationSerializer, LoginSerializer, UserSerializer
+from .serializers import AgentProfileSerializer, AgentRegistrationSerializer, AdminRegistrationSerializer, LoginSerializer, UserSerializer
+from .permissions import IsAgent
 
 # Create your views here.
 
@@ -56,3 +57,10 @@ class loginView(generics.GenericAPIView):
         }, status=status.HTTP_200_OK)
 
 
+# RetrieveUpdateAPIView = allows GET and PUT/PATCH requests
+class AgentProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = AgentProfileSerializer
+    permission_classes = [IsAgent]
+
+    def get_object(self):
+        return self.request.user.profile

@@ -19,6 +19,7 @@ adding your own fields like is_agent and is_admin.
 class CustomUser(AbstractUser):
     is_agent = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
+    
 
 class AgentProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
