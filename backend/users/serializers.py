@@ -65,6 +65,17 @@ class UserSerializer(serializers.ModelSerializer):
 class AgentProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = AgentProfile
-        fields = ('phone_number', 'license_number', 'profile_image', 'bio')
+        fields = [
+            'first_name',
+            'last_name',
+            'phone_number',
+            'license_number',
+            'profile_image',
+            'bio',
+            'address',
+            'race',
+        ]
+        read_only_fields = ['license_number']
+
 
 
