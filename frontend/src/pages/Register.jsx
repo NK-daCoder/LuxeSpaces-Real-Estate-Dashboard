@@ -3,7 +3,7 @@ import { AuthForm } from '../components/Form'
 
 const Register = () => {
   return (
-    <AuthForm type="register-agent" />
+    <AuthForm type="register-agent" role="agent"/>
   )
 }
 

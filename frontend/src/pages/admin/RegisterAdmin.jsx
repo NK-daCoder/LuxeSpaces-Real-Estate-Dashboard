@@ -1,8 +1,9 @@
 import React from 'react'
+import { AuthForm } from '../../components/Form'
 
 const RegisterAdmin = () => {
   return (
-    <div>RegisterAdmin</div>
+    <AuthForm type="register-admin" role="admin"/>
   )
 }
 

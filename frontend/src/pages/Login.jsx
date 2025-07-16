@@ -4,7 +4,7 @@ import { AuthForm } from '../components/Form';
 
 const Login = () => {
   return (
-    <AuthForm type="login" />
+    <AuthForm type="login" role="agent"/>
   );
 }
 

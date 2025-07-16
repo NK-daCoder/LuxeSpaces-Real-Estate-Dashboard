@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-const AuthForm = ({ type }) => {
+const AuthForm = ({ type, role }) => {
   const [formData, setFormData] = useState({ username: '', email: '', password: '', password2: '' });
   const navigate = useNavigate();
   const [openPassword, setOpenPassword] = useState(false);
@@ -10,6 +10,8 @@ const AuthForm = ({ type }) => {
   const isLogin = type === 'login';
   const isAgent = type === 'register-agent';
   const isAdmin = type === 'register-admin';
+
+  const leadingRole = role === 'agent' ? 'Agent' : 'Admin';
 
   const endpointMap = {
     'login': '/api/users/login/',
@@ -49,7 +51,7 @@ const AuthForm = ({ type }) => {
         localStorage.setItem('user', JSON.stringify(data.user));
 
         if (!data.user.is_profile_complete) {
-          navigate('/complete-profile');
+          navigate(`/complete-profile`);
         } else if (data.user.is_admin) {
           navigate('/admin/dashboard');
         } else if (data.user.is_agent) {
@@ -72,13 +74,38 @@ const AuthForm = ({ type }) => {
             <span className="size-12 bg-gradient-to-b from-blue-500 to-blue-600 text-white rounded-2xl shadow-md shadow-blue-600/50 border-t border-blue-300">
               <i className="fi fi-rr-user-pen size-full flex items-center justify-center pl-1" aria-hidden={true}></i>
             </span>
-            {isLogin ? 'Login' : isAgent ? 'Register as Agent' : 'Register as Admin'}
+            {isLogin ? `Login As ${leadingRole}` : `Register As ${leadingRole}`}
           </legend>
-          <label htmlFor="username" className="text-sm tracking-wide mt-5 mb-2 text-stone-600 flex items-center gap-2">
-            <i className="fi fi-rr-user flex items-center justify-center" aria-label={true}></i>
-            Username
-          </label>
-          <input type="text" id="username" name="username" placeholder="Username" required onChange={handleChange} className="text-sm border rounded-2xl px-3 py-2"/>
+          {
+            (isLogin || isAgent || isAdmin) && (
+              <React.Fragment>
+                <label htmlFor="username" className="text-sm tracking-wide mt-5 mb-2 text-stone-600 flex items-center gap-2">
+                  <i className="fi fi-rr-user flex items-center justify-center" aria-label={true}></i>
+                  { !isLogin ? "Custom Username" : "Username" }
+                </label>
+                <input type="text" id="username" name="username" placeholder="Username" required onChange={handleChange} className="text-sm border rounded-2xl px-3 py-2"/>
+              </React.Fragment>
+            )
+          }
+          
+          {
+            !isLogin && (
+              <React.Fragment>
+                <label htmlFor="email" className="text-sm tracking-wide mt-5 mb-2 text-stone-600 flex items-center gap-2">
+                  <i className="fi fi-rr-user-pen flex items-center justify-center" aria-label={true}></i>
+                  First Name
+                </label>
+                <input type="text" id="first-name" name="first_name" placeholder="First Name" required onChange={handleChange} className="text-sm border rounded-2xl px-3 py-2"/>
+
+                <label htmlFor="last-name" className="text-sm tracking-wide mt-5 mb-2 text-stone-600 flex items-center gap-2">
+                  <i className="fi fi-rr-user-pen flex items-center justify-center" aria-label={true}></i>
+                  Last Name
+                </label>
+                <input type="text" id="last-name" name="last_name" placeholder="Last Name" required onChange={handleChange} className="text-sm border rounded-2xl px-3 py-2"/>
+              </React.Fragment>
+            )
+          }
+          
           {!isLogin && (
             <React.Fragment>
             <label htmlFor="email" className="text-sm tracking-wide mt-5 mb-2 text-stone-600 flex items-center gap-2">
