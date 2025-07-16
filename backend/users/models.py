@@ -34,6 +34,16 @@ class AgentProfile(models.Model):
     race = models.CharField(max_length=50, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def is_complete(self):
+        return all([
+            self.first_name,
+            self.last_name,
+            self.phone_number,
+            self.bio,
+            self.license_number,
+        ])
+
     def save(self, *args, **kwargs):
         # if license_number is not set, generate a default one
         if not self.license_number:

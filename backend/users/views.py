@@ -31,7 +31,6 @@ class RegisterAdminView(generics.CreateAPIView):
         serializer.save(is_admin=True)
 
 
-# login view (returns JWT + user info)
 class loginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
     permission_classes = [AllowAny]
@@ -50,11 +49,23 @@ class loginView(generics.GenericAPIView):
 
         refresh = RefreshToken.for_user(user)
 
+        # NEW: Check if profile is complete
+        profile = getattr(user, "profile", None)
+        is_profile_complete = profile.is_complete if profile else False
+
         return Response({
             "refresh": str(refresh),
             "access": str(refresh.access_token),
-            "user": UserSerializer(user).data
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "is_admin": user.is_admin,
+                "is_agent": user.is_agent,
+                "is_profile_complete": is_profile_complete
+            }
         }, status=status.HTTP_200_OK)
+
 
 
 # RetrieveUpdateAPIView = allows GET and PUT/PATCH requests
