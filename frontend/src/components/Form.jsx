@@ -59,7 +59,7 @@ const AuthForm = ({ type, role }) => {
         }
 
       } else {
-        navigate('/');
+        navigate('/agent/login');
       }
     } catch (err) {
       alert(err.message);

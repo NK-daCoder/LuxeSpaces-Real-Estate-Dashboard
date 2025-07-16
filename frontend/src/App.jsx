@@ -7,6 +7,8 @@ import AdminDashboard from './pages/admin/Dashboard';
 import Profile from './pages/Profile';
 import LoginAdmin from './pages/admin/LoginAdmin';
 import RegisterAdmin from './pages/admin/RegisterAdmin';
+import PrivateRoute from './components/PrivateRoute';
+import Homepage from './pages/client/Homepage';
 
 
 const App = () => {
@@ -19,13 +21,28 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path={`/complete-profile`} element={<Profile role={`${role}`}/>} />
+        <Route path="/" element={<Homepage />} />
+        <Route path="/agent/login" element={<Login />} />
+        <Route path="/agent/register" element={<Register />} />
+        <Route path={`/complete-profile`} element={<PrivateRoute><Profile role={`${role}`}/></PrivateRoute>} />
         <Route path="/admin/login" element={<LoginAdmin />} />
         <Route path="/admin/register" element={<RegisterAdmin />} />
-        <Route path="/agent/dashboard" element={<AgentDashboard/>} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route 
+          path="/agent/dashboard" 
+          element={
+            <PrivateRoute allowedRoles={['agent']}>
+              <AgentDashboard />
+            </PrivateRoute>
+          } 
+          />
+        <Route 
+          path="/admin/dashboard" 
+          element={
+            <PrivateRoute allowedRoles={['admin']}>
+              <AdminDashboard />
+            </PrivateRoute>
+          } 
+        />
         
       </Routes>
     </Router>
