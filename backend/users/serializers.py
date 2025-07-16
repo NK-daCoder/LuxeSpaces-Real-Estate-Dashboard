@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 
-from .models import AgentProfile
+from .models import AgentProfile, AdminProfile
 
 # User = get_user_model() means we are using the custom user model defined in our app
 # which is CustomUser in this case. you'll also find it in the settings.py file
@@ -30,7 +30,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'password2')
+        fields = ('username', 'first_name', 'last_name','email', 'password', 'password2')
 
     def validate(self, data):
         if data["password"] != data["password2"]:
@@ -76,6 +76,21 @@ class AgentProfileSerializer(serializers.ModelSerializer):
             'race',
         ]
         read_only_fields = ['license_number']
+
+
+class AdminProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdminProfile
+        fields = [
+            'first_name',
+            'last_name',
+            'phone_number',
+            'license_number',
+            'department',
+            'profile_image',
+            'bio',
+            'address',
+        ]
 
 
 

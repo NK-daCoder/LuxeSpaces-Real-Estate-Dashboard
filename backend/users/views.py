@@ -6,9 +6,9 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import CustomUser
-from .serializers import AgentProfileSerializer, AgentRegistrationSerializer, AdminRegistrationSerializer, LoginSerializer, UserSerializer
-from .permissions import IsAgent
+from .models import CustomUser, AdminProfile
+from .serializers import AgentProfileSerializer, AgentRegistrationSerializer, AdminRegistrationSerializer, LoginSerializer, UserSerializer, AdminProfileSerializer
+from .permissions import IsAgent, IsAdmin
 
 # Create your views here.
 
@@ -28,7 +28,9 @@ class RegisterAdminView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
-        serializer.save(is_admin=True)
+        user = serializer.save(is_admin=True)
+        AdminProfile.objects.create(user=user)
+
 
 
 class loginView(generics.GenericAPIView):
@@ -75,3 +77,11 @@ class AgentProfileView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user.profile
+    
+
+class AdminProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = AdminProfileSerializer
+    permission_classes = [IsAdmin]
+
+    def get_object(self):
+        return self.request.user.admin_profile
