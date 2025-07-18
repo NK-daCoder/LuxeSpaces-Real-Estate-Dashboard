@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .models import AgentProfile, AdminProfile
 
@@ -27,6 +28,8 @@ with role flags (is_agent / is_admin) set in the views, not here.
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
 
     class Meta:
         model = User
@@ -49,6 +52,31 @@ class AgentRegistrationSerializer(UserRegistrationSerializer):
 
 class AdminRegistrationSerializer(UserRegistrationSerializer):
     pass
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        user = self.user
+
+        profile = getattr(user, "profile", None)
+        department = getattr(profile, "department", None) if profile else None
+        is_profile_complete = profile.is_complete if profile else False
+
+        data['user'] = {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "is_admin": user.is_admin,
+            "is_agent": user.is_agent,
+            "is_profile_complete": is_profile_complete,
+        }
+
+        if user.is_agent and hasattr(user, 'profile'):
+            data['user']['department'] = user.profile.department
+
+        return data
+
 
 
 class LoginSerializer(serializers.Serializer):
@@ -74,8 +102,12 @@ class AgentProfileSerializer(serializers.ModelSerializer):
             'bio',
             'address',
             'race',
+            'department'
         ]
         read_only_fields = ['license_number']
+
+        def __str__(self):
+            return f"{self.user.username} - Agent Profile"
 
 
 class AdminProfileSerializer(serializers.ModelSerializer):
@@ -90,6 +122,7 @@ class AdminProfileSerializer(serializers.ModelSerializer):
             'profile_image',
             'bio',
             'address',
+            'race',
         ]
 
 

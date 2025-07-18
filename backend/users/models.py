@@ -32,6 +32,21 @@ class AgentProfile(models.Model):
     bio = models.TextField(blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     race = models.CharField(max_length=50, blank=True, null=True)
+    department = models.CharField(
+        max_length=100, 
+        blank=True, 
+        null=True,
+        choices=[
+            ('Sales', 'Sales'),
+            ('Marketing', 'Marketing'),
+            ('Operations', 'Operations'),
+            ('Finance', 'Finance'),
+            ('HR', 'Human Resources'),
+            ('IT', 'Information Technology'),
+            # ('legal', 'Legal'),
+            # ('general', 'General Administration'),
+        ]
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
