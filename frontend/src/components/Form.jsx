@@ -3,7 +3,15 @@ import { useNavigate } from 'react-router-dom';
 
 
 const AuthForm = ({ type, role }) => {
-  const [formData, setFormData] = useState({ username: '', email: '', password: '', password2: '' });
+  const [formData, setFormData] = useState({
+      username: '',
+      email: '',
+      password: '',
+      password2: '',
+      first_name: '',
+      last_name: '',
+  });
+
   const navigate = useNavigate();
   const [openPassword, setOpenPassword] = useState(false);
 
@@ -32,6 +40,8 @@ const AuthForm = ({ type, role }) => {
       ? { username: formData.username, password: formData.password }
       : formData;
 
+    console.log('Sending payload:', payload);
+
     try {
       const res = await fetch(url, {
         method: 'POST',
@@ -50,16 +60,29 @@ const AuthForm = ({ type, role }) => {
         localStorage.setItem('refresh_token', data.refresh);
         localStorage.setItem('user', JSON.stringify(data.user));
 
-        if (!data.user.is_profile_complete) {
-          navigate(`/complete-profile`);
-        } else if (data.user.is_admin) {
-          navigate('/admin/dashboard');
-        } else if (data.user.is_agent) {
-          navigate('/agent/dashboard');
-        }
+        const user = data.user;
+        const department = user.department;
 
+        if (user.is_agent && !user.is_profile_complete) {
+          navigate('/complete-profile');
+        } else if (user.is_agent) {
+          switch (department) {
+            case 'Sales':
+              navigate('/agent/sales-dashboard');
+              break;
+            case 'Marketing':
+              navigate('/agent/marketing-dashboard');
+              break;
+            case 'IT':
+              navigate('/agent/it-dashboard');
+              break;
+            // etc.
+            default:
+              navigate('/agent/general-dashboard');
+          }
+        }
       } else {
-        navigate('/agent/login');
+        navigate(`/${role}/login`);
       }
     } catch (err) {
       alert(err.message);

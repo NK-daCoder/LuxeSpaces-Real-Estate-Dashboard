@@ -1,9 +1,9 @@
 import React from 'react'
 
-const AgentDashboard = () => {
+const GeneralAgent = () => {
   return (
     <div>Agent</div>
   )
 }
 
-export default AgentDashboard
+export default GeneralAgent

@@ -16,7 +16,7 @@ const Profile = () => {
     race: '',
     bio: '',
     profile_image: null,
-    department: role === 'admin' ? '' : undefined, // Only admins have a department
+    department: '',
   });
 
   const handleChange = (e) => {
@@ -33,17 +33,12 @@ const Profile = () => {
     const token = localStorage.getItem('access_token');
     const body = new FormData();
 
-    // Only send department if admin
-    const keysToSend = Object.keys(formData).filter((key) => {
-      if (role === 'admin') return true;
-      return key !== 'department'; // Agents shouldn't send it
-    });
-
-    keysToSend.forEach((key) => {
+    for (let key in formData) {
       if (formData[key]) {
         body.append(key, formData[key]);
       }
-    });
+    }
+
 
     const url =
       role === 'admin' ? 'http://127.0.0.1:8000/api/users/me/admin-profile/' : 'http://127.0.0.1:8000/api/users/me/profile/';
@@ -66,7 +61,7 @@ const Profile = () => {
   // Redirect to login if user is not authenticated
   useEffect(() => {
     if (!user) {
-      navigate('/login');
+      navigate(`/${role}/login`);
     }
   }, []);
 
@@ -168,31 +163,26 @@ const Profile = () => {
             className="text-sm border rounded-2xl px-4 py-3"
           />
 
-          {/* 👉 Show department input ONLY for admins */}
-          {role === 'admin' && (
-            <>
-              <label htmlFor="department" className="mt-5 mb-1">
-                Department:
-              </label>
-              <select
-                id="department"
-                name="department"
-                value={formData.department}
-                onChange={handleChange}
-                className="text-sm border rounded-2xl px-4 py-3"
-                required
-              >
-                <option value="">Select a department</option>
-                <option value="Operations">Operations</option>
-                <option value="Sales">Sales</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Finance">Finance</option>
-                <option value="HR">Human Resources</option>
-                <option value="IT">IT</option>
-              </select>
-            </>
-          )}
-
+          <label htmlFor="department" className="mt-5 mb-1">
+            Department:
+          </label>
+          <select
+            id="department"
+            name="department"
+            value={formData.department}
+            onChange={handleChange}
+            className="text-sm border rounded-2xl px-4 py-3"
+            required
+          >
+            <option value="">Select a department</option>
+            <option value="Operations">Operations</option>
+            <option value="Sales">Sales</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Finance">Finance</option>
+            <option value="HR">Human Resources</option>
+            <option value="IT">IT</option>
+          </select>
+          
 
           <button
             type="submit"
