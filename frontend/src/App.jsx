@@ -12,14 +12,13 @@ import GeneralAgent from './pages/agent/GeneralAgent';
 import SalesAgent from './pages/agent/SalesAgent';
 import MarketingAgent from './pages/agent/MarketingAgent';
 import ITAgent from './pages/agent/ITAgent';
+import Unauthorized from './components/Unauthorized';
 
 
 const App = () => {
   // autodetect user role based on localStorage
   const isAgent = localStorage.getItem("is_agent") === true || localStorage.getItem("is_agent") === "true";
   const role = isAgent ? "agent" : "admin";
-  console.log("isAgent", isAgent);
-  console.log("role", role);
 
   return (
     <Router>
@@ -30,6 +29,7 @@ const App = () => {
         <Route path={`/complete-profile`} element={<PrivateRoute><Profile role={`${role}`}/></PrivateRoute>} />
         <Route path="/admin/login" element={<LoginAdmin />} />
         <Route path="/admin/register" element={<RegisterAdmin />} />
+        <Route path="/unauthorized" element={<Unauthorized/>}/>
 
         <Route 
           path="/agent/general-dashboard" 

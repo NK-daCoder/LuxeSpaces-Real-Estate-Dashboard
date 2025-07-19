@@ -97,7 +97,10 @@ const AuthForm = ({ type, role }) => {
             <span className="size-12 bg-gradient-to-b from-blue-500 to-blue-600 text-white rounded-2xl shadow-md shadow-blue-600/50 border-t border-blue-300">
               <i className="fi fi-rr-user-pen size-full flex items-center justify-center pl-1" aria-hidden={true}></i>
             </span>
-            {isLogin ? `Login As ${leadingRole}` : `Register As ${leadingRole}`}
+            <div>
+              {isLogin ? `Welcome ${leadingRole}` : `Register As ${leadingRole}`}
+              {isLogin ? (<span className='text-sm text-stone-400 block'>Login to your dashboard and get ready to work...</span>) : <></>}
+            </div>
           </legend>
           {
             (isLogin || isAgent || isAdmin) && (
