@@ -13,7 +13,6 @@ const SalesDashboard = {
     secondayLinks: [
         {iconOne:"fi fi-rr-settings", iconTwo:"fi fi-sr-settings" ,label: 'Settings', to: SalesDashboardPaths.Settings},
         {iconOne:"fi fi-rr-interrogation", iconTwo:"fi fi-sr-interrogation" ,label: 'Help', to: SalesDashboardPaths.HelpDesk},
-        {iconOne:"fi fi-rr-sign-out-alt", iconTwo:"fi fi-sr-sign-out-alt" ,label: 'Logout', to: SalesDashboardPaths.Logout},
     ],
     headerLinks: [
         {iconOne:"fi fi-rr-bell", iconTwo:"fi fi-sr-bell" ,label: 'Notifications', to: SalesDashboardPaths.Notification},

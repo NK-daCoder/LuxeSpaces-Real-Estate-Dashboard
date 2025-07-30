@@ -13,9 +13,10 @@ import SalesAgent from './pages/agent/SalesAgent';
 import MarketingAgent from './pages/agent/MarketingAgent';
 import ITAgent from './pages/agent/ITAgent';
 import Unauthorized from './components/Unauthorized';
-
+import { backendUrl } from './constants/variables';
 
 const App = () => {
+  // console.log("👉 VITE_BACKEND_URL:", backendUrl);
   // autodetect user role based on localStorage
   const isAgent = localStorage.getItem("is_agent") === true || localStorage.getItem("is_agent") === "true";
   const role = isAgent ? "agent" : "admin";
